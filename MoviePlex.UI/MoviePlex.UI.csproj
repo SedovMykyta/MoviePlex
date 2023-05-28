@@ -24,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\MoviePlex.Core\MoviePlex.Core.csproj" />
       <ProjectReference Include="..\MoviePlex.Infrastructure\MoviePlex.Infrastructure.csproj" />
     </ItemGroup>
 
