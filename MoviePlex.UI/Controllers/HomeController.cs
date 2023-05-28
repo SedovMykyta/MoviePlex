@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using MoviePlex.Models;
+using MoviePlex.UI.Models;
 
-namespace MoviePlex.Controllers;
+namespace MoviePlex.UI.Controllers;
 
 public class HomeController : Controller
 {

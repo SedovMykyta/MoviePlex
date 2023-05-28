@@ -1,4 +1,4 @@
-namespace MoviePlex.Models;
+namespace MoviePlex.UI.Models;
 
 public class ErrorViewModel
 {
