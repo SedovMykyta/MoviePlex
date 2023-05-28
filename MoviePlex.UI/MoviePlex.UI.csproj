@@ -4,6 +4,7 @@
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>c8411786-ce26-4ca8-a416-edd87a6d0da4</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,6 +21,10 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MoviePlex.Infrastructure\MoviePlex.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
