@@ -1,6 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using MoviePlex.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<MovieContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MovieDatabase")));
 
 var app = builder.Build();
 
