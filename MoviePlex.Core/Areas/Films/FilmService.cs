@@ -111,7 +111,7 @@ public class FilmService : IFilmService
     {
         if (await _context.Films.AnyAsync(film => film.Name == name && film.Id != id))
         {
-            throw new BadRequestException($"Film with Title: {name} exists");
+            throw new BadRequestException($"Film with Name: {name} exists");
         }
     }
 
