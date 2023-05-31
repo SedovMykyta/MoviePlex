@@ -3,10 +3,10 @@
 public class Session
 {
     public int Id { get; set; }
-    public DateTimeOffset Date { get; set; }
+    public DateTime Date { get; set; }
     public TimeSpan Time { get; set; }
 
-    public int CinemaHallId { get; set; } // Внешний ключ
+    public int CinemaHallId { get; set; } 
     public int FilmId { get; set; }
 
     public Film Film { get; set; }
