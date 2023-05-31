@@ -1,5 +1,9 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using MoviePlex.Core.Areas.CinemaHalls;
+using MoviePlex.Core.Areas.CinemaHalls.AutoMapper;
+using MoviePlex.Core.Areas.CinemaHalls.Dtos;
+using MoviePlex.Core.Areas.CinemaHalls.Validators;
 using MoviePlex.Core.Areas.Films;
 using MoviePlex.Core.Areas.Films.AutoMapper;
 using MoviePlex.Core.Areas.Films.Dtos;
@@ -14,11 +18,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<MovieContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MovieDatabase")));
 
-builder.Services.AddTransient<IValidator<FilmInputDto>, FilmInputDtoValidator>();
+builder.Services.AddScoped<IValidator<FilmInputDto>, FilmInputDtoValidator>();
+builder.Services.AddScoped<IValidator<CinemaHallInputDto>, CinemaHallInputDtoValidator>();
 
 builder.Services.AddTransient<IFilmService, FilmService>();
+builder.Services.AddTransient<ICinemaHallService, CinemaHallService>();
 
-builder.Services.AddAutoMapper(typeof(FilmMappingProfile));
+builder.Services.AddAutoMapper(typeof(FilmMappingProfile), typeof(CinemaHallMappingProfile));
 
 var app = builder.Build();
 
