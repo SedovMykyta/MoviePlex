@@ -1,8 +1,7 @@
 using AutoMapper;
-using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using MoviePlex.Core.Areas.CinemaHalls.Dtos;
+using MoviePlex.Core.Areas.Validators;
 using MoviePlex.Core.Exceptions;
 using MoviePlex.Infrastructure;
 using MoviePlex.Infrastructure.Entities;
@@ -13,24 +12,24 @@ public class CinemaHallService : ICinemaHallService
 {
     private readonly MovieContext _context;
     private readonly IMapper _mapper;
-    private readonly IValidator<CinemaHallInputDto> _validator;
+    private readonly IValidationService _validationService;
     
-    public CinemaHallService(MovieContext context, IMapper mapper, IValidator<CinemaHallInputDto> validator)
+    public CinemaHallService(MovieContext context, IMapper mapper, IValidationService validationService)
     {
         _context = context;
         _mapper = mapper;
-        _validator = validator;
+        _validationService = validationService;
     }
-    
+
     public async Task<List<CinemaHallDto>> GetListAsync()
     {
         var halls = await _context.CinemaHalls
             .Select(hall => _mapper.Map<CinemaHallDto>(hall))
             .ToListAsync();
-
+        
         return halls;
     }
-
+    
     public async Task<CinemaHallDto> GetByIdAsync(int id)
     {
         var hall = await _context.CinemaHalls.FirstOrDefaultAsync(hall => hall.Id == id) 
@@ -53,8 +52,8 @@ public class CinemaHallService : ICinemaHallService
 
     public async Task<CinemaHallDto> CreateAsync(CinemaHallInputDto cinemaHallInput)
     {
-        await ThrowIfNotValidCinemaHallInput(cinemaHallInput);
-
+        await _validationService.ValidateAndThrowAsync(cinemaHallInput);
+        
         await ThrowIfNameExistAsync(cinemaHallInput.Name);
         
         var hall = _mapper.Map<CinemaHall>(cinemaHallInput);
@@ -69,10 +68,10 @@ public class CinemaHallService : ICinemaHallService
 
     public async Task<CinemaHallDto> UpdateByIdAsync(int id, CinemaHallInputDto cinemaHallInput)
     {
+        await _validationService.ValidateAndThrowAsync(cinemaHallInput);
+        
         var hall = await _context.CinemaHalls.FirstOrDefaultAsync(hall => hall.Id == id) 
                    ?? throw new NotFoundException($"Cinema hall with Id: {id} not found");
-
-        await ThrowIfNotValidCinemaHallInput(cinemaHallInput);
 
         await ThrowIfNameExistAsync(cinemaHallInput.Name, hall.Id);
         
@@ -101,28 +100,6 @@ public class CinemaHallService : ICinemaHallService
         if (await _context.CinemaHalls.AnyAsync(hall => hall.Name == name && hall.Id != id))
         {
             throw new BadRequestException($"Cinema hall with Name: {name} exists");
-        }
-    }
-
-    private async Task ThrowIfNotValidCinemaHallInput(CinemaHallInputDto hallInput)
-    {
-        ValidationResult result = await _validator.ValidateAsync(hallInput);
-
-        if (!result.IsValid)
-        {
-            var errors = new Dictionary<string, string>();
-            foreach (var failure in result.Errors)
-            {
-                if (errors.ContainsKey(failure.PropertyName))
-                {
-                    errors[failure.PropertyName] += "; " + failure.ErrorMessage;
-                }
-                else
-                {
-                    errors[failure.PropertyName] = failure.ErrorMessage;
-                }
-            }
-            throw new ValidationErrorException(errors);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MoviePlex.Core.Areas.CinemaHalls.Dtos;
+using MoviePlex.Core.Areas.Sessions.Dtos;
 using MoviePlex.Infrastructure.Entities;
 
 namespace MoviePlex.Core.Areas.CinemaHalls.AutoMapper;

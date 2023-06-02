@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using MoviePlex.Core.Areas.Films.Dtos;
+using MoviePlex.Core.Areas.Validators;
 using MoviePlex.Core.Exceptions;
 using MoviePlex.Infrastructure;
 using MoviePlex.Infrastructure.Entities;
 using MoviePlex.Infrastructure.Entities.Enum;
-using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace MoviePlex.Core.Areas.Films;
 
@@ -14,13 +13,13 @@ public class FilmService : IFilmService
 {
     private readonly MovieContext _context;
     private readonly IMapper _mapper;
-    private readonly IValidator<FilmInputDto> _validator;
+    private readonly IValidationService _validationService;
     
-    public FilmService(MovieContext context, IMapper mapper, IValidator<FilmInputDto> validator)
+    public FilmService(MovieContext context, IMapper mapper, IValidationService validationService)
     {
         _context = context;
         _mapper = mapper;
-        _validator = validator;
+        _validationService = validationService;
     }
 
     public async Task<List<FilmDto>> GetListAsync()
@@ -64,8 +63,8 @@ public class FilmService : IFilmService
 
     public async Task<FilmDto> CreateAsync(FilmInputDto filmInput)
     {
-        await ThrowIfNotValidFilmInput(filmInput);
-
+        await _validationService.ValidateAndThrowAsync(filmInput);
+        
         await ThrowIfNameExistAsync(filmInput.Name);
         
         var film = _mapper.Map<Film>(filmInput);
@@ -80,10 +79,10 @@ public class FilmService : IFilmService
 
     public async Task<FilmDto> UpdateByIdAsync(int id, FilmInputDto filmInput)
     {
+        await _validationService.ValidateAndThrowAsync(filmInput);
+        
         var film = await _context.Films.FirstOrDefaultAsync(film => film.Id == id) 
                    ?? throw new NotFoundException($"Film with Id: {id} not found");
-
-        await ThrowIfNotValidFilmInput(filmInput);
 
         await ThrowIfNameExistAsync(filmInput.Name, film.Id);
         
@@ -112,28 +111,6 @@ public class FilmService : IFilmService
         if (await _context.Films.AnyAsync(film => film.Name == name && film.Id != id))
         {
             throw new BadRequestException($"Film with Name: {name} exists");
-        }
-    }
-
-    private async Task ThrowIfNotValidFilmInput(FilmInputDto filmInput)
-    {
-        ValidationResult result = await _validator.ValidateAsync(filmInput);
-
-        if (!result.IsValid)
-        {
-            var errors = new Dictionary<string, string>();
-            foreach (var failure in result.Errors)
-            {
-                if (errors.ContainsKey(failure.PropertyName))
-                {
-                    errors[failure.PropertyName] += "; " + failure.ErrorMessage;
-                }
-                else
-                {
-                    errors[failure.PropertyName] = failure.ErrorMessage;
-                }
-            }
-            throw new ValidationErrorException(errors);
         }
     }
 }

@@ -8,6 +8,10 @@ using MoviePlex.Core.Areas.Films;
 using MoviePlex.Core.Areas.Films.AutoMapper;
 using MoviePlex.Core.Areas.Films.Dtos;
 using MoviePlex.Core.Areas.Films.Validators;
+using MoviePlex.Core.Areas.Sessions;
+using MoviePlex.Core.Areas.Sessions.Dtos;
+using MoviePlex.Core.Areas.Sessions.Validators;
+using MoviePlex.Core.Areas.Validators;
 using MoviePlex.Infrastructure;
 using MoviePlex.UI.Middlewares;
 
@@ -18,11 +22,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<MovieContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MovieDatabase")));
 
+builder.Services.AddScoped<IValidationService, ValidationService>();
 builder.Services.AddScoped<IValidator<FilmInputDto>, FilmInputDtoValidator>();
 builder.Services.AddScoped<IValidator<CinemaHallInputDto>, CinemaHallInputDtoValidator>();
+builder.Services.AddScoped<IValidator<SessionInputDto>, SessionInputDtoValidator>();
 
 builder.Services.AddTransient<IFilmService, FilmService>();
 builder.Services.AddTransient<ICinemaHallService, CinemaHallService>();
+builder.Services.AddTransient<ISessionService, SessionService>();
 
 builder.Services.AddAutoMapper(typeof(FilmMappingProfile), typeof(CinemaHallMappingProfile));
 

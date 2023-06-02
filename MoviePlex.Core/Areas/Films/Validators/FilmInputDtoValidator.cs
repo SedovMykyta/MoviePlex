@@ -19,18 +19,12 @@ public class FilmInputDtoValidator : AbstractValidator<FilmInputDto>
                 TimeSpan.FromHours(23) + TimeSpan.FromMinutes(59) + TimeSpan.FromSeconds(59))
             .WithMessage("The duration must be no more than 23 hours 59 minutes 59 seconds");
 
+        //TODO
         // RuleFor(x => x.RentalStartDate)
-        //     .NotEmpty().WithMessage("The date must be specified")
-        //     .Must(BeValidDateOnly).WithMessage("Incorrect date format");
 
+        //TODO 
+        //Make a check that the end date is later than the start date
         // RuleFor(film => film.RentalEndDate)
-        //     .NotEmpty().WithMessage("The date must be specified")
-        //     .Must(BeValidDateOnly).WithMessage("Incorrect date format");
-        // RuleFor(film => film)
-        //     .Must(film => DateOnly.TryParse(film.RentalEndDate, out var endDate) &&
-        //                   DateOnly.TryParse(film.RentalStartDate, out var startDate) && endDate > startDate)
-        //     .WithMessage("Rental end time must be greater than rental start time")
-        //     .WithName("RentalEndDate");
 
         RuleFor(film => film.Publisher)
             .Length(2, 200).WithMessage("Length must be between 2 and 200 characters");
