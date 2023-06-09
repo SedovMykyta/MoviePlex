@@ -1,0 +1,12 @@
+﻿@model MoviePlex.Core.Areas.Films.Dtos.FilmInputDto;
+
+@{
+    ViewBag.Title = "Edit Film";
+    Layout = "_Layout";
+}
+
+
+@using (Html.BeginForm("Edit", "Film", FormMethod.Post))
+{
+    await Html.RenderPartialAsync("PartialViews/InputForm");
+}

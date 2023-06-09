@@ -1,0 +1,49 @@
+﻿@model MoviePlex.Core.Areas.Films.Dtos.FilmInputDto;
+
+@Html.ValidationSummary(true)
+<fieldset>
+    <legend>Create Film</legend>
+    <div class="form-group">
+        <label for="Name" class="form-label mt-4">Name</label>
+        <input type="text" class="form-control" asp-for="Name" placeholder="Enter name">
+        <span class="text-danger" asp-validation-for="Name"></span>
+    </div>
+    <div class="form-group">
+        <label for="Duration" class="form-label mt-4">Duration</label>
+        <input type="time" class="form-control" asp-for="Duration" placeholder="Enter duration">
+        <span asp-validation-for="Duration"></span>
+    </div>
+    <div class="form-group">
+        <label for="RentalStartDate" class="form-label mt-4">Rental Start Date</label>
+        <input type="date" class="form-control" asp-for="RentalStartDate" placeholder="Enter rental start date">
+        <span class="text-danger" asp-validation-for="RentalStartDate"></span>
+    </div>
+    <div class="form-group">
+        <label for="RentalEndDate" class="form-label mt-4">Rental End Date</label>
+        <input type="Date" class="form-control" asp-for="RentalEndDate" placeholder="Enter rental end date">
+        <span class="text-danger" asp-validation-for="RentalEndDate"></span>
+    </div>
+    <div class="form-group">
+        <label for="Publisher" class="form-label mt-4">Publisher</label>
+        <input type="text" class="form-control" asp-for="Publisher" placeholder="Enter publisher">
+        <span class="text-danger" asp-validation-for="Publisher"></span>
+    </div>
+    <div class="form-group">
+        <label for="Genre" class="form-label mt-4">Genre</label>
+        <select class="form-select" asp-for="Genre">
+            <option value="1">Comedy</option>
+            <option value="2">Drama</option>
+            <option value="3">History</option>
+            <option value="4">Horror</option>
+            <option value="99">Other</option>
+        </select>
+        <span class="text-danger" asp-validation-for="Genre"></span>
+    </div>
+    <div class="form-group">
+        <label for="Trailer" class="form-label mt-4">Trailer</label>
+        <input type="text" class="form-control" asp-for="Trailer" placeholder="Enter url on trailer">
+        <span class="text-danger" asp-validation-for="Trailer"></span>
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</fieldset>
