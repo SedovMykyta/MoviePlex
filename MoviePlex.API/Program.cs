@@ -2,6 +2,7 @@ using System.Reflection;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using MoviePlex.API.Filters;
+using MoviePlex.API.Middlewares;
 using MoviePlex.Core.Areas.CinemaHalls;
 using MoviePlex.Core.Areas.CinemaHalls.AutoMapper;
 using MoviePlex.Core.Areas.CinemaHalls.Dtos;
@@ -15,7 +16,6 @@ using MoviePlex.Core.Areas.Sessions.Dtos;
 using MoviePlex.Core.Areas.Sessions.Validators;
 using MoviePlex.Core.Areas.Validators;
 using MoviePlex.Infrastructure;
-using MoviePlex.UI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,7 +54,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddlewareApi>();
 
 app.UseHttpsRedirection();
 

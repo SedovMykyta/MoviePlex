@@ -6,6 +6,11 @@ namespace MoviePlex.API.Filters;
 
 public class EnumSchemaFilter : ISchemaFilter
 {
+    /// <summary>
+    /// Changes the numbers in the input fields to names 
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="context"></param>
     public void Apply(OpenApiSchema model, SchemaFilterContext context)
     {
         if (! context.Type.IsEnum)

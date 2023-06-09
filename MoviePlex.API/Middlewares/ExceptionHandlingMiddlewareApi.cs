@@ -2,17 +2,18 @@
 using System.Net.Mime;
 using System.Text.Json;
 using MoviePlex.Core.Exceptions;
+using MoviePlex.UI.Middlewares;
 using MoviePlex.UI.Middlewares.ExceptionHandler;
 
-namespace MoviePlex.UI.Middlewares;
+namespace MoviePlex.API.Middlewares;
 
-public class ExceptionHandlingMiddleware
+public class ExceptionHandlingMiddlewareApi
 {
     private const HttpStatusCode InternalServerErrorMessage = HttpStatusCode.InternalServerError;
     private readonly RequestDelegate _next;
-    private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+    private readonly ILogger<ExceptionHandlingMiddlewareMvc> _logger;
 
-    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
+    public ExceptionHandlingMiddlewareApi(RequestDelegate next, ILogger<ExceptionHandlingMiddlewareMvc> logger)
     {
         _next = next;
         _logger = logger;
@@ -29,15 +30,15 @@ public class ExceptionHandlingMiddleware
             await HandleExceptionAsync(ex, httpContext);
         }
     }
-
+    
     private async Task HandleExceptionAsync(Exception ex, HttpContext context)
     {
         _logger.LogError(ex.Message);
-
+    
         var response = context.Response;
         
         response.ContentType = MediaTypeNames.Application.Json;
-
+    
         ErrorDto errorDto = new();
         
         if (ex is CustomException customException)
