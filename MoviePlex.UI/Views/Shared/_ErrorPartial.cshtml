@@ -1,0 +1,21 @@
+﻿@{
+    var errorMessage = Context.Session.GetString("ErrorMessage");
+    Context.Session.Remove("ErrorMessage");
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div id="error-message" class="alert alert-danger" role="alert">
+        <span>@errorMessage</span>
+        <button id="close-error" type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<script>
+    document.getElementById("close-error").addEventListener("click", function() 
+    {
+        document.getElementById("error-message").style.display = "none";
+    });
+</script>
